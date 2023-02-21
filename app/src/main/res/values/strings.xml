@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ArtGallery</string>
+    <string name="img0_name">Dust Eater</string>
+    <string name="img1_name">Onlookers</string>
+    <string name="img2_name">Connections</string>
+    <string name="img3_name">Red Star</string>
+    <string name="img4_name">Layers</string>
+    <string name="img5_name">Crags</string>
+    <string name="img6_name">Spiral</string>
+    <string name="img7_name">Home\'s Call</string>
+    <string name="img8_name">Departure</string>
+</resources>
