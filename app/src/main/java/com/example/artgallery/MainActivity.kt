@@ -45,65 +45,76 @@ class MainActivity : ComponentActivity() {
 fun MainApp() {
     var imageIndex by remember {mutableStateOf(0)};
 
+    var setImageIndex: (Int) -> Unit = {imageIndex = it}
+
     Column(
         modifier = Modifier.padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Surface(elevation = 10.dp, border = BorderStroke(5.dp, Color.Gray)) {
-            getImage(imageIndex);
-        }
-        Surface(elevation = 10.dp, border = BorderStroke(3.dp, Color.Black)) {
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = getText(imageIndex = imageIndex),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(6.dp)
-                )
-                Text(text = "Taken By: Alec Currie", modifier = Modifier.padding(7.dp))
-            }
-        }
-        Row(modifier = Modifier.padding(10.dp)) {
-            Button(
-                onClick = {
-                    if (imageIndex == 0) imageIndex = IMAGE_QUANTITY
-                    else imageIndex--
-                }, modifier = Modifier.width(100.dp)
-            ) {
-                Text("Previous")
-            }
-            Spacer(modifier = Modifier.padding(10.dp))
-            Button(
-                onClick = {
-                    if (imageIndex == IMAGE_QUANTITY) imageIndex = 0
-                    else imageIndex++
-                }, modifier = Modifier.width(100.dp)
-            ) {
-                Text("Next")
-            }
-        }
+        ImageSurface(imageIndex);
+        ImageLabelSurface(imageIndex)
+        ButtonRow(imageIndex, setImageIndex)
         Text(text = "All photos were taken in the game Surviving Mars", fontSize = 8.sp)
     }
 }
 
 @Composable
-fun getImage(imageIndex: Int) {
-    return when (imageIndex) {
-        0 -> Image(painter = painterResource(R.drawable.screenshot0000), contentDescription = "0")
-        1 -> Image(painter = painterResource(R.drawable.screenshot0001), contentDescription = "1")
-        2 -> Image(painter = painterResource(R.drawable.screenshot0003), contentDescription = "2")
-        3 -> Image(painter = painterResource(R.drawable.screenshot0004), contentDescription = "3")
-        4 -> Image(painter = painterResource(R.drawable.screenshot0005), contentDescription = "4")
-        5 -> Image(painter = painterResource(R.drawable.screenshot0006), contentDescription = "5")
-        6 -> Image(painter = painterResource(R.drawable.screenshot0007), contentDescription = "6")
-        7 -> Image(painter = painterResource(R.drawable.screenshot0008), contentDescription = "7")
-        else -> Image(
-            painter = painterResource(R.drawable.screenshot0009),
-            contentDescription = "8"
-        )
+private fun ButtonRow(imageIndex: Int, onClick: (Int) -> Unit) {
+    //var imageIndex1 = imageIndex
+    Row(modifier = Modifier.padding(10.dp)) {
+        Button(
+            onClick = {
+                if (imageIndex == 0) onClick(IMAGE_QUANTITY)
+                else onClick(imageIndex - 1)
+            }, modifier = Modifier.width(100.dp)
+        ) {
+            Text("Previous")
+        }
+        Spacer(modifier = Modifier.padding(10.dp))
+        Button(
+            onClick = {
+                if (imageIndex == IMAGE_QUANTITY) onClick(0)
+                else onClick(imageIndex + 1)
+            }, modifier = Modifier.width(100.dp)
+        ) {
+            Text("Next")
+        }
+    }
+}
+
+@Composable
+private fun ImageLabelSurface(imageIndex: Int) {
+    Surface(elevation = 10.dp, border = BorderStroke(3.dp, Color.Black)) {
+        Column(
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = getText(imageIndex = imageIndex),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(6.dp)
+            )
+            Text(text = "Taken By: Alec Currie", modifier = Modifier.padding(7.dp))
+        }
+    }
+}
+
+@Composable
+fun ImageSurface(imageIndex: Int) {
+    Surface(elevation = 10.dp, border = BorderStroke(5.dp, Color.Gray)) {
+        var resourceID: Int = when (imageIndex) {
+            0 -> R.drawable.screenshot0000
+            1 -> R.drawable.screenshot0001
+            2 -> R.drawable.screenshot0003
+            3 -> R.drawable.screenshot0004
+            4 -> R.drawable.screenshot0005
+            5 -> R.drawable.screenshot0006
+            6 -> R.drawable.screenshot0007
+            7 -> R.drawable.screenshot0008
+            else -> R.drawable.screenshot0009
+        }
+        Image(painter = painterResource(id = resourceID), getText(imageIndex = imageIndex))
     }
 }
 
